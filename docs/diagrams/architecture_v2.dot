@@ -1,0 +1,25 @@
+digraph V2 {
+  rankdir=LR; bgcolor="white"; node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11, fillcolor="#EEF2F7", color="#4A6274"]; edge [fontname="Helvetica", fontsize=9, color="#4A6274"];
+  label="Version 2 - Python decides, LLM narrates"; labelloc=t; fontname="Helvetica-Bold"; fontsize=14;
+  player [label="Player", shape=ellipse, fillcolor="#FFF4D6"];
+  ui [label="Streamlit UI\nchat + state sidebar"];
+  subgraph cluster_p { label="action_parser.py"; style="dashed"; color="#888888"; fontname="Helvetica"; fontsize=10;
+    guard [label="Deterministic guards\ncheat / injection regex\ncode extraction"];
+    plm [label="Gemini (JSON mode)\nintent only, no secrets\n(fallback: keyword rules)", fillcolor="#E4F0FC"];
+  }
+  engine [label="engine.py\nValidator + rules\n(examine/take/use/\nopen/enter_code)", fillcolor="#E3F4E8", color="#3E7D52"];
+  config [label="room_config.json\nobjects, locks,\nCODES, hints", shape=note, fillcolor="#FCE4E4", color="#B04A4A"];
+  state [label="Game state (dict)\ninventory, solved,\nclues, door, log", shape=cylinder, fillcolor="#E3F4E8", color="#3E7D52"];
+  nar [label="narrator.py\nGemini describes\nvalidated FACTS only", fillcolor="#E4F0FC"];
+  check [label="Output check\nleaked code / fake escape\n-> plain facts"];
+  player -> ui [label="text"];
+  ui -> guard [label="raw text"];
+  guard -> plm [label="cheat? -> verb=cheat"];
+  plm -> engine [label="Action{verb,target,\nitem,code}"];
+  config -> engine [label="rules"];
+  engine -> state [label="update only\nif valid", dir=both];
+  engine -> nar [label="Result facts +\npublic state"];
+  nar -> check -> ui;
+  state -> ui [label="sidebar"];
+  ui -> player;
+}

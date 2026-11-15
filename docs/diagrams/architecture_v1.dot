@@ -1,0 +1,17 @@
+digraph V1 {
+  rankdir=LR; bgcolor="white"; node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11, fillcolor="#EEF2F7", color="#4A6274"]; edge [fontname="Helvetica", fontsize=9, color="#4A6274"];
+  label="Version 1 - LLM-only Game Master"; labelloc=t; fontname="Helvetica-Bold"; fontsize=14;
+  player [label="Player", shape=ellipse, fillcolor="#FFF4D6"];
+  ui [label="Streamlit UI\n(chat, intro, restart)"];
+  hist [label="st.session_state\nchat history", shape=cylinder];
+  prompt [label="System prompt\nroom + rules + SOLUTIONS", fillcolor="#FCE4E4", color="#B04A4A"];
+  llm [label="Gemini\n(Game Master)\ndecides everything", fillcolor="#E4F0FC"];
+  win [label="Win check:\n[[ESCAPED]] in reply?"];
+  player -> ui [label="natural language"];
+  ui -> hist [label="append"];
+  hist -> llm [label="full history"];
+  prompt -> llm;
+  llm -> ui [label="narration"];
+  llm -> win; win -> ui [label="show win"];
+  ui -> player;
+}
