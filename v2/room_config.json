@@ -1,0 +1,98 @@
+{
+  "title": "The Locked Library",
+  "intro": "You wake up on a cold wooden floor. Dusty shelves rise around you, a single lamp flickers on an oak desk and the heavy library door is shut tight, a keypad glowing beside it. Somebody has locked you inside **The Locked Library**. Find a way out.",
+  "room_description": "A small, dusty library. You can see an oak desk with a drawer, a tall bookshelf, a glass cabinet, a painting of a lighthouse and a heavy door with a keypad.",
+
+  "objects": {
+    "desk": {
+      "name": "oak desk",
+      "aliases": ["desk", "oak desk", "table", "lamp", "note"],
+      "visible": true,
+      "description": "A heavy oak desk with a brass lamp. A note is pinned to it: \"Only the red ones tell the truth.\" The desk has a single drawer."
+    },
+    "bookshelf": {
+      "name": "bookshelf",
+      "aliases": ["bookshelf", "shelf", "shelves", "bookcase", "books"],
+      "visible": true,
+      "description": "Rows of brown and green leather books. Four books with bright red spines stand out.",
+      "reveals": ["red_books"]
+    },
+    "red_books": {
+      "name": "red books",
+      "aliases": ["red books", "red book", "red spines", "four books"],
+      "visible": false,
+      "description": "You open the four red books one by one. On the first page of each, someone has written a single digit. From left to right they read 7, 2, 9, 4.",
+      "on_examine": {"solve": "red_books_read", "clue": "drawer_code"}
+    },
+    "drawer": {
+      "name": "desk drawer",
+      "aliases": ["drawer", "desk drawer"],
+      "visible": true,
+      "locked": true,
+      "lock": {"type": "code", "code": "7294", "requires": "red_books_read", "solve": "drawer_opened"},
+      "contains": ["brass_key"],
+      "description_locked": "The drawer is held shut by a small 4-digit combination lock.",
+      "description_unlocked": "The drawer is open."
+    },
+    "cabinet": {
+      "name": "glass cabinet",
+      "aliases": ["cabinet", "glass cabinet", "display case", "case", "cupboard"],
+      "visible": true,
+      "locked": true,
+      "lock": {"type": "item", "item": "brass_key", "solve": "cabinet_opened"},
+      "contains": ["uv_torch"],
+      "description_locked": "A glass display cabinet with a brass keyhole. Something small sits on the shelf inside.",
+      "description_unlocked": "The cabinet door swings open."
+    },
+    "painting": {
+      "name": "painting",
+      "aliases": ["painting", "picture", "lighthouse", "canvas", "frame"],
+      "visible": true,
+      "description": "An oil painting of a lighthouse on a stormy coast. The varnish looks oddly uneven, as if something was painted over in invisible ink.",
+      "use_reveal": {
+        "item": "uv_torch",
+        "solve": "painting_revealed",
+        "clue": "door_code",
+        "text": "Under the violet light, glowing numbers appear across the sky of the painting: 3 8 5 9."
+      }
+    },
+    "door": {
+      "name": "door",
+      "aliases": ["door", "exit", "keypad", "library door"],
+      "visible": true,
+      "locked": true,
+      "final": true,
+      "lock": {"type": "code", "code": "3859", "requires": "painting_revealed", "solve": "door_opened"},
+      "description_locked": "A heavy oak door. A 4-digit keypad glows red beside the handle.",
+      "description_unlocked": "The door stands open. Fresh air flows in."
+    }
+  },
+
+  "items": {
+    "brass_key": {
+      "name": "brass key",
+      "aliases": ["brass key", "key"],
+      "description": "A small, slightly tarnished brass key."
+    },
+    "uv_torch": {
+      "name": "UV torch",
+      "aliases": ["uv torch", "torch", "flashlight", "uv light", "uv lamp", "black light", "uv flashlight"],
+      "description": "A small torch that emits violet ultraviolet light."
+    }
+  },
+
+  "clues": {
+    "drawer_code": "The red books show the digits 7, 2, 9, 4.",
+    "door_code": "The painting shows the glowing numbers 3, 8, 5, 9."
+  },
+
+  "hints": [
+    {"until": "red_books_read", "text": "The note on the desk says only the red ones tell the truth. Look closely at the bookshelf."},
+    {"until": "drawer_opened", "text": "The red books gave you four digits. The drawer has a 4-digit lock."},
+    {"until": "has:brass_key", "text": "The drawer is open. Is there anything inside worth taking?"},
+    {"until": "cabinet_opened", "text": "A brass key... and there is a cabinet with a brass keyhole."},
+    {"until": "has:uv_torch", "text": "Something is sitting inside the open cabinet."},
+    {"until": "painting_revealed", "text": "The painting's varnish looks strange. Maybe a special light would show more."},
+    {"until": "door_opened", "text": "You have the numbers from the painting. Try them on the door keypad."}
+  ]
+}
