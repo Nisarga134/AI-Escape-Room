@@ -63,7 +63,7 @@ LLMs are good storytellers but unreliable referees. If the LLM is the whole game
 ## 5. Installation & running
 
 ```bash
-git clone https://github.com/<your-username>/AI-Escape-Room.git
+git clone https://github.com/Nisarga134/AI-Escape-Room.git
 cd AI-Escape-Room
 
 python -m venv .venv
